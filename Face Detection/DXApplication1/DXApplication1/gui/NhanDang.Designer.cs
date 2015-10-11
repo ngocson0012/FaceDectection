@@ -379,7 +379,7 @@
             // lblSoNguoi
             // 
             this.lblSoNguoi.AutoSize = true;
-            this.lblSoNguoi.Location = new System.Drawing.Point(386, 279);
+            this.lblSoNguoi.Location = new System.Drawing.Point(341, 199);
             this.lblSoNguoi.Name = "lblSoNguoi";
             this.lblSoNguoi.Size = new System.Drawing.Size(10, 13);
             this.lblSoNguoi.TabIndex = 108;
@@ -388,7 +388,7 @@
             // lblTen
             // 
             this.lblTen.AutoSize = true;
-            this.lblTen.Location = new System.Drawing.Point(90, 279);
+            this.lblTen.Location = new System.Drawing.Point(96, 235);
             this.lblTen.Name = "lblTen";
             this.lblTen.Size = new System.Drawing.Size(10, 13);
             this.lblTen.TabIndex = 108;

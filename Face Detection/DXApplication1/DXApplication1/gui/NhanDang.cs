@@ -582,6 +582,7 @@ namespace DXApplication1.gui
         {
             //try
             //{
+
             //    detect.Enabled = false;
 
             //    grabber = new Capture();
