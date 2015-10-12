@@ -138,8 +138,9 @@ namespace DXApplication1.gui
             {
 
                 string[] mangmatran = dt.Rows[tbd]["Hinh"].ToString().Split('@');
+              //  MessageBox.Show(mangmatran.Length.ToString());
 
-                for (int i = 0; i < mangmatran.Length - 1; i++)
+                for (int i = 0; i < mangmatran.Length - 1; i+=2)
                 {
                     string[] mangmatran1 = mangmatran[i].Split('.');
                     // string s = "";
@@ -241,8 +242,8 @@ namespace DXApplication1.gui
                 //Face Detector
                 MCvAvgComp[][] facesDetected = gray.DetectHaarCascade(
               face,
-              1.2,
-              10,
+              1.1,
+              5,
               Emgu.CV.CvEnum.HAAR_DETECTION_TYPE.DO_CANNY_PRUNING,
               new Size(60, 60));
 
@@ -394,9 +395,12 @@ namespace DXApplication1.gui
                     //////////////////////////////////////////////////
                     if (matrix1s != null)
                     {
+                        int khs = Convert.ToInt16(txtk.Text);
+                        
+
                         string namegb = "", nameAvg = "";
                         double max = 0, avg = 0;
-                        Matrix1.Compare(matrix1s, labels, matrixtam, out max, out namegb, out avg, out nameAvg);
+                        Matrix1.Compare(matrix1s, labels, matrixtam, out max, out namegb, out avg, out nameAvg,khs);
                         // name1=recognizerall(f);
                         name1 = namegb;
                         lblTen.Text = namegb;
@@ -540,59 +544,10 @@ namespace DXApplication1.gui
         }
         #endregion
 
-        #region draw eye
-        private MCvAvgComp DrawEyes(MCvAvgComp f)
-        {
-
-
-            // Our Region of interest where find eyes will start with a sample estimation using face metric
-            Int32 StartSearchEyes = f.rect.Top + (f.rect.Height * 3 / 11);
-            Point startingPointSearchEyes = new Point(f.rect.X, StartSearchEyes);
-            Point endingPointSearchEyes = new Point((f.rect.X + f.rect.Width), StartSearchEyes);
-
-            Size searchEyesAreaSize = new Size(f.rect.Width, (f.rect.Height * 2 / 9));
-            Point lowerEyesPointOptimized = new Point(f.rect.X, StartSearchEyes + searchEyesAreaSize.Height);
-            Size eyeAreaSize = new Size(f.rect.Width / 2, (f.rect.Height * 2 / 9));
-            Point startingLeftEyePointOptimized = new Point(f.rect.X + f.rect.Width / 2, StartSearchEyes);
-
-            Rectangle possibleROI_eyes = new Rectangle(startingPointSearchEyes, searchEyesAreaSize);
-            Rectangle possibleROI_rightEye = new Rectangle(startingPointSearchEyes, eyeAreaSize);
-            Rectangle possibleROI_leftEye = new Rectangle(startingLeftEyePointOptimized, eyeAreaSize);
-
-
-
-            #region Drawing Utilities
-            // Let's draw our search area, first the upper line
-            currentFrame.Draw(new LineSegment2D(startingPointSearchEyes, endingPointSearchEyes), new Bgr(Color.White), 3);
-            // draw the bottom line
-            currentFrame.Draw(new LineSegment2D(lowerEyesPointOptimized, new Point((lowerEyesPointOptimized.X + f.rect.Width), (StartSearchEyes + searchEyesAreaSize.Height))), new Bgr(Color.White), 3);
-            // draw the eyes search vertical line
-            currentFrame.Draw(new LineSegment2D(startingLeftEyePointOptimized, new Point(startingLeftEyePointOptimized.X, (StartSearchEyes + searchEyesAreaSize.Height))), new Bgr(Color.White), 3);
-
-            //     MCvFont font = new MCvFont(FONT.CV_FONT_HERSHEY_TRIPLEX, 0.6d, 0.6d);
-            //     frame.Draw("Search Eyes Area", ref font, new Point((startingLeftEyePointOptimized.X - 80), (StartSearchEyes + searchEyesAreaSize.Height + 15)), new Bgr(Color.Yellow));
-            //     frame.Draw("Right Eye Area", ref font, new Point(startingPointSearchEyes.X, startingPointSearchEyes.Y - 10), new Bgr(Color.Aqua));
-            //     frame.Draw("Left Eye Area", ref font, new Point(startingLeftEyePointOptimized.X + searchEyesAreaSize.Height / 2, startingPointSearchEyes.Y - 10), new Bgr(Color.Yellow));
-            #endregion
-            return f;
-        }
-        #endregion
         bool ktgrabber;
         private void detect_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-
-            //    detect.Enabled = false;
-
-            //    grabber = new Capture();
-            //    grabber.QueryFrame();                
-            //    Application.Idle += new EventHandler(FrameGrabber);
-            //    addface.Enabled = true;
-            //    cancle.Enabled = true;
-
-            //}
-            //catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+           
             try
             {
                 if (!ktgrabber)
@@ -620,16 +575,13 @@ namespace DXApplication1.gui
 
         private void luuanh()
         {
-            //  string t = kketnoi.lay1dong("if( select max(hinh) from sinhvien sv) is null  select 0 else select max(hinh)+10 from sinhvien sv");
-            // string stt = kketnoi.lay1dong("select max(stt)+1 from sinhvien");
             string matrananh = "";
             int row, col;
             string dtt1 = "";//==================================
             for (int i = 0; i < 10; i++)
             {
 
-                //int tam = Convert.ToInt16(t) + i;
-                // tface[i].Save(directorypath + "/face" + tam + ".bmp");
+              
                 row = matrix1stam[i].NoRows;
                 col = matrix1stam[i].NoCols;
 
@@ -641,8 +593,8 @@ namespace DXApplication1.gui
                         matrananh += '.';
 
                     }
-                //   TrainedFace.Save(directorypath + "/face" + demfaceluu + ".bmp");
-                matrananh += '@';
+               
+                matrananh += "@0@";
             }
             //===========================
             //MessageBox.Show(matrananh.ToString());
@@ -656,8 +608,7 @@ namespace DXApplication1.gui
             kketnoi.connect();
             SqlCommand cm = new SqlCommand("insert into sinhvien values('" + mssvtxt.Text + "','" + textBox1.Text + "','','','','','" + matrananh + "','" + loptxt.Text + "')", kketnoi.con);
             cm.ExecuteNonQuery();
-            //SqlCommand cm2 = new SqlCommand("insert into diemdanh values('" + mssvtxt.Text + "','" + monhoc_txt.SelectedValue + "','','','','','','','','','','','')", kketnoi.con);
-            //cm2.ExecuteNonQuery();
+
             dt = kketnoi.laydl("select mamh from mon");
             foreach (DataRow dr in dt.Rows)
             {
@@ -738,26 +689,7 @@ namespace DXApplication1.gui
                     matrix1s.Add(x);
                     labels.Add(textBox1.Text);
 
-                    //foreach (Control c in this.Controls)
-                    //{
-                    //    if (c is PictureBox & c.Name == face)
-                    //    {
-                    //        ((PictureBox)c).Image = test;
-                    //    }
-
-                    //}
-                    //       dt.Clear();
-
-                    /*
-                                        for (int i = 1; i < trainingImages.ToArray().Length + 1; i++)
-                                        {
-                                            trainingImages.ToArray()[i - 1].Save(Application.StartupPath + "/Faces/face" + i + ".bmp");
-                                            k = i;
-                                            //  File.AppendAllText(Application.StartupPath + "/Faces/TrainedLabels.txt", labels.ToArray()[i - 1] + "%");
-
-                                        }
-
-                                        */
+                   
 
                     if (dem != 9)
                         addface.Text = "Add face " + (dem + 2).ToString();
@@ -857,7 +789,7 @@ public void refreshdata()
     
 
         private void loptxt_EditValueChanged(object sender, EventArgs e)
-        {
+        {/*
             try
             {
                 //get all image name  in imagelist
@@ -878,6 +810,7 @@ public void refreshdata()
                 //  gridControl1.DataSource = kketnoi.laydl("select sv.MSSV,TenSV,TenLop,Tuan1,Tuan2,Tuan3,Tuan4,Tuan5,Tuan6,Tuan7,Tuan8,Tuan9,Tuan10,Tong from sinhvien sv,lop l,DiemDanh d where sv.MaLop=l.MaLop and d.mssv=sv.mssv and sv.malop='" + loptxt.Text + "' ");
             }
             catch (Exception ex) { MessageBox.Show("Nothings face in databse" + ex.ToString()); }
+            */
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -1017,6 +950,11 @@ public void refreshdata()
             }
         }
 
+        private void loptxt_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+           // MessageBox.Show("lop selectedindexchange");
+        }
+
         #region xuat file excel
         private void simpleButton1_Click(object sender, EventArgs e)
         {
@@ -1037,15 +975,9 @@ public void refreshdata()
         }
         #endregion
 
-        private void simpleButton1_Click_1(object sender, EventArgs e)
+        private void loptxt_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                ExportTableToExcel.exportToExcel((DataTable)gridControl1.DataSource, "DanhsachSV.xls");
-                MessageBox.Show("OK");
-                Process.Start("DanhsachSV.xls");
-            }
-            catch (Exception) { }
+            //try { loaddanhsachsv(); } catch (Exception) { }
         }
 
         private void monhoc_txt_SelectedValueChanged_1(object sender, EventArgs e)
@@ -1057,6 +989,10 @@ public void refreshdata()
         {
             try
             {
+                //system.data.row=>return
+                if (loptxt.Text.Length > 10)
+                    return;
+               // MessageBox.Show(loptxt.Text);
                 //get all image name  in imagelist
 
                 directorypath = Application.StartupPath + "/Faces/" + loptxt.Text + "";
@@ -1075,7 +1011,7 @@ public void refreshdata()
                 //  gridControl1.DataSource = kketnoi.laydl("select sv.MSSV,TenSV,TenLop,Tuan1,Tuan2,Tuan3,Tuan4,Tuan5,Tuan6,Tuan7,Tuan8,Tuan9,Tuan10,Tong from sinhvien sv,lop l,DiemDanh d where sv.MaLop=l.MaLop and d.mssv=sv.mssv and sv.malop='" + loptxt.Text + "' ");
             }
             catch (Exception ex)
-            { //MessageBox.Show("Nothings face in databse" + ex.ToString()); 
+            { MessageBox.Show( ex.ToString()); 
             }
         }
 
@@ -1099,11 +1035,6 @@ public void refreshdata()
         {
             if (!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar))
                 e.Handled = true;
-        }
-
-        private void ribbonControl_Click(object sender, EventArgs e)
-        {
-
         }
         ///////////reset
    
@@ -1144,16 +1075,6 @@ public void refreshdata()
         }
 
       
-
-        private void imageBox2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void xóaSinhViênToolStripMenuItem_Click(object sender, EventArgs e)
         {

@@ -66,6 +66,8 @@
             this.lblTen = new System.Windows.Forms.Label();
             this.comboBoxEdit1 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.txtk = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibn)).BeginInit();
@@ -97,7 +99,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(315, 279);
+            this.label12.Location = new System.Drawing.Point(300, 279);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(50, 13);
             this.label12.TabIndex = 91;
@@ -379,20 +381,20 @@
             // lblSoNguoi
             // 
             this.lblSoNguoi.AutoSize = true;
-            this.lblSoNguoi.Location = new System.Drawing.Point(341, 199);
+            this.lblSoNguoi.Location = new System.Drawing.Point(368, 279);
             this.lblSoNguoi.Name = "lblSoNguoi";
-            this.lblSoNguoi.Size = new System.Drawing.Size(10, 13);
+            this.lblSoNguoi.Size = new System.Drawing.Size(14, 13);
             this.lblSoNguoi.TabIndex = 108;
-            this.lblSoNguoi.Text = ".";
+            this.lblSoNguoi.Text = "sl";
             // 
             // lblTen
             // 
             this.lblTen.AutoSize = true;
-            this.lblTen.Location = new System.Drawing.Point(96, 235);
+            this.lblTen.Location = new System.Drawing.Point(62, 263);
             this.lblTen.Name = "lblTen";
-            this.lblTen.Size = new System.Drawing.Size(10, 13);
+            this.lblTen.Size = new System.Drawing.Size(41, 13);
             this.lblTen.TabIndex = 108;
-            this.lblTen.Text = ".";
+            this.lblTen.Text = "tenmax";
             // 
             // comboBoxEdit1
             // 
@@ -412,11 +414,29 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.xoa_Click_1);
             // 
+            // txtk
+            // 
+            this.txtk.Location = new System.Drawing.Point(31, 307);
+            this.txtk.Name = "txtk";
+            this.txtk.Size = new System.Drawing.Size(100, 20);
+            this.txtk.TabIndex = 110;
+            this.txtk.Text = "1";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(12, 310);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(13, 13);
+            this.label13.TabIndex = 93;
+            this.label13.Text = "k";
+            // 
             // NhanDang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1296, 692);
+            this.Controls.Add(this.txtk);
             this.Controls.Add(this.comboBoxEdit1);
             this.Controls.Add(this.lblTen);
             this.Controls.Add(this.lblSoNguoi);
@@ -429,6 +449,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.lblAvg);
             this.Controls.Add(this.lblMax);
             this.Controls.Add(this.label12);
@@ -453,7 +474,9 @@
             this.Controls.Add(this.addface);
             this.Controls.Add(this.detect);
             this.Name = "NhanDang";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NhanDang";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.NhanDang_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibm)).EndInit();
@@ -511,5 +534,7 @@
         private System.Windows.Forms.Label lblTen;
         private System.Windows.Forms.ComboBox comboBoxEdit1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox txtk;
+        private System.Windows.Forms.Label label13;
     }
 }

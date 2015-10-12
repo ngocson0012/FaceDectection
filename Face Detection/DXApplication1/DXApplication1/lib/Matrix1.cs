@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
@@ -2125,13 +2125,16 @@ namespace DXApplication1
         }
 
         #region compare2maxtrix
-        public static void Compare(List<Matrix1> matrix1s, List<string> labels, Matrix1 mtthem, out double max, out string name,out double avg,out string nameAvg)
+        public static void Compare(List<Matrix1> matrix1s, List<string> labels, Matrix1 mtthem, out double max, out string name,out double avg,out string nameAvg,int khs)
         {
-            int dem = 0;
+            int dem = 0,demy=0;
             double[] avgs= new double[matrix1s.Count/10];
+            double[] dgt1 = new double[10];
+            
             double gt = 0,sum=0;
             name = ""; nameAvg = "";
             max = 0; avg = 0;
+            
             for (int i = 0; i < matrix1s.Count; i++)
             {
                
@@ -2143,34 +2146,65 @@ namespace DXApplication1
                     max = gt;
                     name = labels[i];
                 }
-              
-                
+                //them % giong cua 1 ng vaof mang 1 chieu
+                dgt1[demy] = gt;
+                demy++;
+                //xét đủ  10 ảnh 1 người trong 1 mảng 
                 if (i % 9 == 0 & i != 0)
                 {
-                    avgs[dem] = sum / 10;
+                    double sum5=sapxep_tinhtrungbinh(dgt1,khs);
+                    avgs[dem] = sum5;
+                   //lay trung binh 10 anh 1 nguoi
+                   // avgs[dem] = sum / 10;
                     sum = 0;
                     dem++;
+                    demy = 0;
                 }
-                if ((i - 1) % 9 == 0)
-                {
-
-                    
-                }
+             
             }
             //tim max trong mang cac phan tu trung binh
-            double mavg = 0;
+           
             for (int i = 0; i < matrix1s.Count / 10;i++ )
             {
-                if (mavg < avgs[i])
+                if (avg < avgs[i])
                 {
-                    mavg = avgs[i];
-                    nameAvg = labels[i];
+                    avg = avgs[i];
+                    nameAvg = labels[i*10];
                 }
             }
-            avg = mavg;
+            
             if (max < 0.8) name = "Unknown";
-            if (mavg < 0.7) nameAvg = "Unknown";
+            if (avg < 0.7) nameAvg = "Unknown";
         }
         #endregion
+
+        public static double sapxep_tinhtrungbinh(double[] dgt1,int khs)
+        {
+            //xu ly 10 anh cua 1 ng
+            //sap xep giam dan 
+
+            for (int j = 0; j < 9; j++)
+            {
+                for (int k = j + 1; k < 10; k++)
+                {
+                    if (dgt1[j] < dgt1[k])
+                    {
+                        double tam = dgt1[k];
+                        dgt1[k] = dgt1[j];
+                        dgt1[j] = tam;
+
+                    }
+                }
+            }
+            double sum5 = 0;
+           
+            //lay trung binh 5 gtri lon nhat
+            for (int k = 0; k < khs; k++)
+            {
+                sum5 += dgt1[k];
+            }
+            sum5 = sum5 / khs;
+            return sum5;
+        }
     }
 }
