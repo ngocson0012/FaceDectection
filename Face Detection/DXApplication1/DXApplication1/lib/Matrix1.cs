@@ -2198,7 +2198,7 @@ namespace DXApplication1
             }
             double sum5 = 0;
            
-            //lay trung binh 5 gtri lon nhat
+            //lay trung binh khs gtri lon nhat
             for (int k = 0; k < khs; k++)
             {
                 sum5 += dgt1[k];
