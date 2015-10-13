@@ -230,15 +230,9 @@ namespace DXApplication1.gui
             {
                 //  NamePersons.Add("");
 
-
-
-                //Get the current frame form capture device
-                //currentFrame = grabber.QueryFrame().Resize(600, 440, INTER.CV_INTER_CUBIC);
-                currentFrame = grabber.QueryFrame().Resize(600, 480, INTER.CV_INTER_CUBIC);
-
+                currentFrame = grabber.QueryFrame().Resize(640, 480, INTER.CV_INTER_CUBIC);
                 //Convert it to Grayscale
                 gray = currentFrame.Convert<Gray, Byte>();
-
                 //Face Detector
                 MCvAvgComp[][] facesDetected = gray.DetectHaarCascade(
               face,
@@ -249,12 +243,9 @@ namespace DXApplication1.gui
 
                 SoNguoi = 0;
                 //Action for each element detected
-                //  gray.ROI = Rectangle.Empty;
 
                 foreach (MCvAvgComp f in facesDetected[0])
                 {
-
-                    //////////xu ly face
                     t = t + 1;
                     resultface = currentFrame.Copy(f.rect).Convert<Gray, byte>().Resize(100, 100, INTER.CV_INTER_CUBIC);
                     sf = f.rect.Width / 100.0;
@@ -401,7 +392,6 @@ namespace DXApplication1.gui
                         string namegb = "", nameAvg = "";
                         double max = 0, avg = 0;
                         Matrix1.Compare(matrix1s, labels, matrixtam, out max, out namegb, out avg, out nameAvg,khs);
-                        // name1=recognizerall(f);
                         name1 = namegb;
                         lblTen.Text = namegb;
                         lblMax.Text = string.Format("{0:00.0000}", max);
@@ -415,7 +405,6 @@ namespace DXApplication1.gui
                     }
                     //  NamePersons[t - 1] = name;
                     //  NamePersons.Add("");
-
 
                     //Set the number of faces detected on the scene
                     //                label3.Text = facesDetected[0].Length.ToString();

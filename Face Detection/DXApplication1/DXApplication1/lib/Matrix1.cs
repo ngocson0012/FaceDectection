@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 using System.Windows.Forms;
-
+using System.Linq;
+using DXApplication1.lib;
 
 namespace DXApplication1
 {
@@ -17,37 +18,43 @@ namespace DXApplication1
     {
         public Matrix1NullException()
             :
-            base("To do this operation, Matrix1 can not be null") { }
+            base("To do this operation, Matrix1 can not be null")
+        { }
     }
     class Matrix1DimensionException : ApplicationException
     {
         public Matrix1DimensionException()
             :
-            base("Dimension of the two matrices not suitable for this operation !") { }
+            base("Dimension of the two matrices not suitable for this operation !")
+        { }
     }
     class Matrix1NotSquare : ApplicationException
     {
         public Matrix1NotSquare()
             :
-            base("To do this operation, Matrix1 must be a square Matrix1 !") { }
+            base("To do this operation, Matrix1 must be a square Matrix1 !")
+        { }
     }
     class Matrix1DeterminentZero : ApplicationException
     {
         public Matrix1DeterminentZero()
             :
-            base("Determinent of Matrix1 equals zero, inverse can't be found !") { }
+            base("Determinent of Matrix1 equals zero, inverse can't be found !")
+        { }
     }
     class VectorDimensionException : ApplicationException
     {
         public VectorDimensionException()
             :
-            base("Dimension of Matrix1 must be [3 , 1] to do this operation !") { }
+            base("Dimension of Matrix1 must be [3 , 1] to do this operation !")
+        { }
     }
     class Matrix1SingularException : ApplicationException
     {
         public Matrix1SingularException()
             :
-            base("Matrix1 is singular this operation cannot continue !") { }
+            base("Matrix1 is singular this operation cannot continue !")
+        { }
     }
     #endregion
     public class Matrix1
@@ -133,11 +140,11 @@ namespace DXApplication1
         #region "Max and Min element"
         public static double Find_Max(double[,] Mat)
         {
-            double res = Mat[0,0];
+            double res = Mat[0, 0];
             for (int i = 0; i < Mat.GetLength(0); i++)
                 for (int j = 0; j < Mat.GetLength(1); j++)
-                    if (res < Mat[i,j])
-                        res = Mat[i,j];
+                    if (res < Mat[i, j])
+                        res = Mat[i, j];
             return res;
         }
         public static double Find_Max(Matrix1 Mat1)
@@ -145,11 +152,11 @@ namespace DXApplication1
 
         public static double Find_Min(double[,] Mat)
         {
-            double res = Mat[0,0];
+            double res = Mat[0, 0];
             for (int i = 0; i < Mat.GetLength(0); i++)
                 for (int j = 0; j < Mat.GetLength(1); j++)
-                    if (res > Mat[i,j])
-                        res = Mat[i,j];
+                    if (res > Mat[i, j])
+                        res = Mat[i, j];
             return res;
         }
         public static double Find_Min(Matrix1 Mat1)
@@ -643,7 +650,7 @@ namespace DXApplication1
             Tr_Mat = new double[Cols + 1, Rows + 1];
 
             for (i = 0; i <= Rows; i++)
-                for (j = 0; j <= Cols; j++) 
+                for (j = 0; j <= Cols; j++)
                     Tr_Mat[j, i] = Mat[i, j];
 
             return Tr_Mat;
@@ -2111,9 +2118,9 @@ namespace DXApplication1
             throw new NotImplementedException();
         }
 
-        public static double[,] ConvertMatrix(double[] flat,int m,int n)
+        public static double[,] ConvertMatrix(double[] flat, int m, int n)
         {
-           
+
             if (flat.Length != m * n)
             {
                 throw new ArgumentException("Invalid length");
@@ -2125,24 +2132,23 @@ namespace DXApplication1
         }
 
         #region compare2maxtrix
-        public static void Compare(List<Matrix1> matrix1s, List<string> labels, Matrix1 mtthem, out double max, out string name,out double avg,out string nameAvg,int khs)
+        public static void Compare(List<Matrix1> matrix1s, List<string> labels, Matrix1 mtthem, out double max, out string name, out double avg, out string nameAvg, int khs)
         {
-            int dem = 0,demy=0;
-            double[] avgs= new double[matrix1s.Count/10];
+            int dem = 0, demy = 0;
+            double[] avgs = new double[matrix1s.Count / 10];
             double[] dgt1 = new double[10];
-            
-            double gt = 0,sum=0;
+
+            double gt = 0, sum = 0;
             name = ""; nameAvg = "";
             max = 0; avg = 0;
-            
+
             for (int i = 0; i < matrix1s.Count; i++)
             {
-               
                 gt = Match.MatchO(matrix1s[i], mtthem);
-                sum += gt; 
+                sum += gt;
                 if (gt.CompareTo(max) == 1)
                 {
-                    
+
                     max = gt;
                     name = labels[i];
                 }
@@ -2152,34 +2158,48 @@ namespace DXApplication1
                 //xét đủ  10 ảnh 1 người trong 1 mảng 
                 if (i % 9 == 0 & i != 0)
                 {
-                    double sum5=sapxep_tinhtrungbinh(dgt1,khs);
+                    double sum5 = sapxep_tinhtrungbinh(dgt1, khs);
                     avgs[dem] = sum5;
-                   //lay trung binh 10 anh 1 nguoi
-                   // avgs[dem] = sum / 10;
+                    //lay trung binh 10 anh 1 nguoi
+                    // avgs[dem] = sum / 10;
                     sum = 0;
                     dem++;
                     demy = 0;
                 }
-             
             }
             //tim max trong mang cac phan tu trung binh
-           
-            for (int i = 0; i < matrix1s.Count / 10;i++ )
+            for (int i = 0; i < matrix1s.Count / 10; i++)
             {
                 if (avg < avgs[i])
                 {
                     avg = avgs[i];
-                    nameAvg = labels[i*10];
+                    nameAvg = labels[i * 10];
                 }
             }
-            
             if (max < 0.8) name = "Unknown";
             if (avg < 0.7) nameAvg = "Unknown";
         }
         #endregion
 
-        public static double sapxep_tinhtrungbinh(double[] dgt1,int khs)
+        public static double sapxep_tinhtrungbinh(double[] dgt1, int khs)
         {
+            //sap xep giam theo mang arraysort
+            List<double> lst = dgt1.OfType<double>().ToList();
+            List<double> Sorted = new List<double>();
+            List<int> index = new List<int>();
+
+            ArraySort AS = new ArraySort();
+            AS.SortByDescending(lst, out Sorted, out index);
+
+            string a="", b="", c="";
+            for (int i = 0; i < lst.Count; i++)
+            {
+                 a += String.Format("{0:0.00}  ", lst[i]) ;
+                b += String.Format("{0:0.00}  ", Sorted[i]);
+                c += String.Format("{0}  ",index[i].ToString());
+            }
+            MessageBox.Show("List:  "+a+"\nSorted:  "+b+ "\nIndex:  "+c);
+
             //xu ly 10 anh cua 1 ng
             //sap xep giam dan 
 
@@ -2192,18 +2212,19 @@ namespace DXApplication1
                         double tam = dgt1[k];
                         dgt1[k] = dgt1[j];
                         dgt1[j] = tam;
-
                     }
                 }
             }
             double sum5 = 0;
-           
             //lay trung binh khs gtri lon nhat
             for (int k = 0; k < khs; k++)
             {
                 sum5 += dgt1[k];
             }
             sum5 = sum5 / khs;
+            //lay ra mang vi tri cac anh da detect ra 1 lan
+
+
             return sum5;
         }
     }

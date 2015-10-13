@@ -94,6 +94,7 @@
     <Compile Include="gui\NhanDang.Designer.cs">
       <DependentUpon>NhanDang.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\ArraySort.cs" />
     <Compile Include="lib\EigenObjectRecognizer1.cs" />
     <Compile Include="lib\exporttoexcel.cs" />
     <Compile Include="lib\FeatureMatrix.cs" />
