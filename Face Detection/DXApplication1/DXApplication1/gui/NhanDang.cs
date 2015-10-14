@@ -591,7 +591,7 @@ namespace DXApplication1.gui
         {
             if(webCam.Checked==false && ipCam.Checked==false)
             {
-                MessageBox.Show("Please select camera");
+                MessageBox.Show("Please select camera to use");
             }
             else
             {
