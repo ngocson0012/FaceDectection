@@ -68,6 +68,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.txtk = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.webCam = new System.Windows.Forms.RadioButton();
+            this.ipCam = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibn)).BeginInit();
@@ -76,6 +79,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxframgrabber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblAvg
@@ -146,7 +150,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(461, 233);
+            this.label7.Location = new System.Drawing.Point(581, 263);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(108, 13);
             this.label7.TabIndex = 84;
@@ -197,7 +201,7 @@
             // 
             // imageBox1
             // 
-            this.imageBox1.Location = new System.Drawing.Point(575, 182);
+            this.imageBox1.Location = new System.Drawing.Point(715, 224);
             this.imageBox1.Name = "imageBox1";
             this.imageBox1.Size = new System.Drawing.Size(90, 88);
             this.imageBox1.TabIndex = 75;
@@ -281,7 +285,7 @@
             // detect
             // 
             this.detect.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.detect.Location = new System.Drawing.Point(412, 263);
+            this.detect.Location = new System.Drawing.Point(410, 283);
             this.detect.Name = "detect";
             this.detect.Size = new System.Drawing.Size(114, 44);
             this.detect.TabIndex = 64;
@@ -431,11 +435,45 @@
             this.label13.TabIndex = 93;
             this.label13.Text = "k";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.ipCam);
+            this.groupBox1.Controls.Add(this.webCam);
+            this.groupBox1.Location = new System.Drawing.Point(418, 169);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(151, 86);
+            this.groupBox1.TabIndex = 111;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Chon Camera";
+            // 
+            // webCam
+            // 
+            this.webCam.AutoSize = true;
+            this.webCam.Location = new System.Drawing.Point(21, 20);
+            this.webCam.Name = "webCam";
+            this.webCam.Size = new System.Drawing.Size(68, 17);
+            this.webCam.TabIndex = 0;
+            this.webCam.TabStop = true;
+            this.webCam.Text = "Webcam";
+            this.webCam.UseVisualStyleBackColor = true;
+            // 
+            // ipCam
+            // 
+            this.ipCam.AutoSize = true;
+            this.ipCam.Location = new System.Drawing.Point(21, 55);
+            this.ipCam.Name = "ipCam";
+            this.ipCam.Size = new System.Drawing.Size(74, 17);
+            this.ipCam.TabIndex = 1;
+            this.ipCam.TabStop = true;
+            this.ipCam.Text = "Camera IP";
+            this.ipCam.UseVisualStyleBackColor = true;
+            // 
             // NhanDang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1296, 692);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtk);
             this.Controls.Add(this.comboBoxEdit1);
             this.Controls.Add(this.lblTen);
@@ -486,6 +524,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxframgrabber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -536,5 +576,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox txtk;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton ipCam;
+        private System.Windows.Forms.RadioButton webCam;
     }
 }

@@ -138,9 +138,9 @@ namespace DXApplication1.gui
             {
 
                 string[] mangmatran = dt.Rows[tbd]["Hinh"].ToString().Split('@');
-              //  MessageBox.Show(mangmatran.Length.ToString());
+                //  MessageBox.Show(mangmatran.Length.ToString());
 
-                for (int i = 0; i < mangmatran.Length - 1; i+=2)
+                for (int i = 0; i < mangmatran.Length - 1; i += 2)
                 {
                     string[] mangmatran1 = mangmatran[i].Split('.');
                     // string s = "";
@@ -387,11 +387,11 @@ namespace DXApplication1.gui
                     if (matrix1s != null)
                     {
                         int khs = Convert.ToInt16(txtk.Text);
-                        
+
 
                         string namegb = "", nameAvg = "";
                         double max = 0, avg = 0;
-                        Matrix1.Compare(matrix1s, labels, matrixtam, out max, out namegb, out avg, out nameAvg,khs);
+                        Matrix1.Compare(matrix1s, labels, matrixtam, out max, out namegb, out avg, out nameAvg, khs);
                         name1 = namegb;
                         lblTen.Text = namegb;
                         lblMax.Text = string.Format("{0:00.0000}", max);
@@ -534,9 +534,35 @@ namespace DXApplication1.gui
         #endregion
 
         bool ktgrabber;
-        private void detect_Click(object sender, EventArgs e)
+        private void IPcamDetect()
         {
-           
+            try
+            {
+                if (!ktgrabber)
+                {
+                    detect.Text = "Stop";
+                    ktgrabber = true;
+                    grabber = new Capture("rtsp://192.168.0.10//user=admin1_password=admin1_channel=1_stream=0.sdp");
+                    grabber.QueryFrame();
+                    Application.Idle += new EventHandler(FrameGrabber);
+                    addface.Enabled = true;
+                    
+                    //cancle.Enabled = true;
+                }
+                else
+                {
+                    grabber.Dispose();
+                    Application.Idle -= new EventHandler(FrameGrabber);
+                    detect.Text = "Start";
+                    ktgrabber = false;
+                    addface.Enabled = false;
+                    // cancle.Enabled = false;
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+        }
+        private void webCamDetect()
+        {
             try
             {
                 if (!ktgrabber)
@@ -556,10 +582,30 @@ namespace DXApplication1.gui
                     detect.Text = "Start";
                     ktgrabber = false;
                     addface.Enabled = false;
-                   // cancle.Enabled = false;
+                    // cancle.Enabled = false;
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+        }
+        private void detect_Click(object sender, EventArgs e)
+        {
+            if(webCam.Checked==false && ipCam.Checked==false)
+            {
+                MessageBox.Show("Please select camera");
+            }
+            else
+            {
+                if (webCam.Checked == true)
+                {
+                    webCamDetect();
+                }
+                else
+                {
+                    IPcamDetect();
+                }
+            }
+                    
+            
         }
 
         private void luuanh()
