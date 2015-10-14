@@ -2198,7 +2198,7 @@ namespace DXApplication1
                 b += String.Format("{0:0.00}  ", Sorted[i]);
                 c += String.Format("{0}  ",index[i].ToString());
             }
-            MessageBox.Show("List:  "+a+"\nSorted:  "+b+ "\nIndex:  "+c);
+         //   MessageBox.Show("List:  "+a+"\nSorted:  "+b+ "\nIndex:  "+c);
 
             //xu ly 10 anh cua 1 ng
             //sap xep giam dan 
