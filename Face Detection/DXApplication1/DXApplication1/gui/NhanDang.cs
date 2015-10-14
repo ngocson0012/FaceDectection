@@ -542,7 +542,7 @@ namespace DXApplication1.gui
                 {
                     detect.Text = "Stop";
                     ktgrabber = true;
-                    grabber = new Capture("rtsp://192.168.0.10//user=admin1_password=admin1_channel=1_stream=0.sdp");
+                    grabber = new Capture("rtsp://192.168.0.10//user=admin1_password=admin1_channel=1_stream=1.sdp");
                     grabber.QueryFrame();
                     Application.Idle += new EventHandler(FrameGrabber);
                     addface.Enabled = true;
