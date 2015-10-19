@@ -1109,7 +1109,7 @@ public void refreshdata()
 
         }
 
-      
+      //xx
 
         private void xóaSinhViênToolStripMenuItem_Click(object sender, EventArgs e)
         {
