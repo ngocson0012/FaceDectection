@@ -380,7 +380,7 @@ namespace DXApplication1.gui
                         resultnose = graytam;
                         break;
                     }
-
+                    //xx
                     #endregion
 
                     //////////////////////////////////////////////////
