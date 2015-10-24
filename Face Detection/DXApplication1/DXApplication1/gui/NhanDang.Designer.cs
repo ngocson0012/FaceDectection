@@ -53,7 +53,6 @@
             this.addface = new System.Windows.Forms.Button();
             this.detect = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.gridControl1 = new System.Windows.Forms.DataGridView();
@@ -61,7 +60,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.loptxt = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.monhoc_txt = new System.Windows.Forms.ComboBox();
             this.lblSoNguoi = new System.Windows.Forms.Label();
             this.lblTen = new System.Windows.Forms.Label();
             this.comboBoxEdit1 = new System.Windows.Forms.ComboBox();
@@ -69,8 +67,8 @@
             this.txtk = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.webCam = new System.Windows.Forms.RadioButton();
             this.ipCam = new System.Windows.Forms.RadioButton();
+            this.webCam = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibn)).BeginInit();
@@ -304,17 +302,6 @@
             this.label6.TabIndex = 101;
             this.label6.Text = "Điểm Danh";
             // 
-            // label10
-            // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.label10.Location = new System.Drawing.Point(86, 397);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(61, 17);
-            this.label10.TabIndex = 95;
-            this.label10.Text = "Môn học";
-            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -373,15 +360,6 @@
             this.comboBox1.TabIndex = 107;
             this.comboBox1.SelectedValueChanged += new System.EventHandler(this.loptxt_SelectedValueChanged);
             // 
-            // monhoc_txt
-            // 
-            this.monhoc_txt.FormattingEnabled = true;
-            this.monhoc_txt.Location = new System.Drawing.Point(153, 399);
-            this.monhoc_txt.Name = "monhoc_txt";
-            this.monhoc_txt.Size = new System.Drawing.Size(121, 21);
-            this.monhoc_txt.TabIndex = 105;
-            this.monhoc_txt.SelectedIndexChanged += new System.EventHandler(this.monhoc_txt_SelectedIndexChanged);
-            // 
             // lblSoNguoi
             // 
             this.lblSoNguoi.AutoSize = true;
@@ -403,6 +381,17 @@
             // comboBoxEdit1
             // 
             this.comboBoxEdit1.FormattingEnabled = true;
+            this.comboBoxEdit1.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
             this.comboBoxEdit1.Location = new System.Drawing.Point(157, 427);
             this.comboBoxEdit1.Name = "comboBoxEdit1";
             this.comboBoxEdit1.Size = new System.Drawing.Size(121, 21);
@@ -446,17 +435,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Chon Camera";
             // 
-            // webCam
-            // 
-            this.webCam.AutoSize = true;
-            this.webCam.Location = new System.Drawing.Point(21, 20);
-            this.webCam.Name = "webCam";
-            this.webCam.Size = new System.Drawing.Size(68, 17);
-            this.webCam.TabIndex = 0;
-            this.webCam.TabStop = true;
-            this.webCam.Text = "Webcam";
-            this.webCam.UseVisualStyleBackColor = true;
-            // 
             // ipCam
             // 
             this.ipCam.AutoSize = true;
@@ -467,6 +445,17 @@
             this.ipCam.TabStop = true;
             this.ipCam.Text = "Camera IP";
             this.ipCam.UseVisualStyleBackColor = true;
+            // 
+            // webCam
+            // 
+            this.webCam.AutoSize = true;
+            this.webCam.Location = new System.Drawing.Point(21, 20);
+            this.webCam.Name = "webCam";
+            this.webCam.Size = new System.Drawing.Size(68, 17);
+            this.webCam.TabIndex = 0;
+            this.webCam.TabStop = true;
+            this.webCam.Text = "Webcam";
+            this.webCam.UseVisualStyleBackColor = true;
             // 
             // NhanDang
             // 
@@ -480,12 +469,10 @@
             this.Controls.Add(this.lblSoNguoi);
             this.Controls.Add(this.loptxt);
             this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.monhoc_txt);
             this.Controls.Add(this.gridControl1);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.label10);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.lblAvg);
@@ -560,8 +547,6 @@
         private System.Windows.Forms.Button addface;
         private System.Windows.Forms.Button detect;
         private System.Windows.Forms.Label label6;
-    
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.DataGridView gridControl1;
@@ -569,7 +554,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ComboBox loptxt;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox monhoc_txt;
         private System.Windows.Forms.Label lblSoNguoi;
         private System.Windows.Forms.Label lblTen;
         private System.Windows.Forms.ComboBox comboBoxEdit1;
