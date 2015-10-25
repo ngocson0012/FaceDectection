@@ -638,6 +638,7 @@ namespace DXApplication1.gui
                 kketnoi.connect();
                 SqlCommand cm3 = new SqlCommand("insert into Hinh values('" + mssvtxt.Text.Trim() + "'," + i + ",'" + matrananh + "','')", kketnoi.con); //son
                 cm3.ExecuteNonQuery();
+                matrananh = "";
                 //matrananh += "@0@";
             }
             //===========================
