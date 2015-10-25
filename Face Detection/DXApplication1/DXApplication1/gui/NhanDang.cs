@@ -133,7 +133,7 @@ namespace DXApplication1.gui
             matrix1s = new List<Matrix1>();
 
             int len = newsizegb.Width; //MessageBox.Show("new size gb with" + len.ToString());
-            dt = kketnoi.laydl("select hinh,Tensv from Hinh H,sinhvien sv where h.mssv=sv.mssv and malop='" + loptxt.Text.Trim() + "'");
+            dt = kketnoi.laydl("select hinh,h.MSSV from Hinh H,sinhvien sv where h.mssv=sv.mssv and malop='" + loptxt.Text.Trim() + "'");
             int indexmt; string dtt2 = "";//============================
             for (int tbd = 0; tbd < dt.Rows.Count; tbd++)
             {
@@ -158,20 +158,20 @@ namespace DXApplication1.gui
                         //s += x[j, k];
                     }
                 // MessageBox.Show(dtt2);
-                labels.Add(dt.Rows[tbd]["Tensv"].ToString());
+                labels.Add(dt.Rows[tbd]["MSSV"].ToString());
 
                 matrix1s.Add(x);
 
 
-               
+
                 // }
                 // dtt2 += x.ToString();//=======================
 
             }
-            string fileName = Application.StartupPath + "\\dtt2.txt";
-            StreamWriter sw = new StreamWriter(fileName, false);
-            sw.WriteLine(dtt2);
-            sw.Close();
+            //string fileName = Application.StartupPath + "\\dtt2.txt";
+            //StreamWriter sw = new StreamWriter(fileName, false);
+            //sw.WriteLine(dtt2);
+            //sw.Close();
 
             // gridControl1.DataSource = dt;
         }
@@ -394,16 +394,26 @@ namespace DXApplication1.gui
                     {
                         int khs = Convert.ToInt16(txtk.Text);
 
-
+                        List<double> Index_Maxtrix_Max = new List<double>();
                         string namegb = "", nameAvg = "";
                         double max = 0, avg = 0;
-                        Matrix1.Compare(matrix1s, labels, matrixtam, out max, out namegb, out avg, out nameAvg, khs);
+                        Matrix1.Compare(matrix1s, labels, matrixtam, out max, out namegb, out avg, out nameAvg, khs, out Index_Maxtrix_Max);
                         name1 = namegb;
                         lblTen.Text = namegb;
                         lblMax.Text = string.Format("{0:00.0000}", max);
                         lblAvg.Text = string.Format("{0:00.0000}", avg);
                         lblTenAvg.Text = nameAvg;
+                       // string test = "";
+                        if (Index_Maxtrix_Max != null)
+                        {
+                            //foreach (var ins in Index_Maxtrix_Max)
+                            //{
+                            //    test += ins.ToString() + "\n";
+                            //}
+                           // MessageBox.Show(test);
+                            CapNhatAnh(Index_Maxtrix_Max,nameAvg,matrixtam);
 
+                        }
                         //Draw the label for each face detected and recognized
                         currentFrame.Draw(namegb, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
 
@@ -438,8 +448,51 @@ namespace DXApplication1.gui
                 //  NamePersons.Clear();
             }
             catch (Exception exx)
-            { //MessageBox.Show("Loi la \n "+exx.ToString()); 
+            {
+                MessageBox.Show("Loi la \n " + exx.ToString());
             }
+        }
+        public void CapNhatAnh(List<double> list,string ma,Matrix1 matrix)
+        {
+            //Cập nhật số lần
+            DataTable dtb = new DataTable();
+            SqlCommand cm;
+            SqlDataAdapter da;
+            kketnoi.connect();
+            for (int l = 0; l < list.Count; l+=2)
+            {
+                cm = new SqlCommand("UPDATE [Hinh] SET [SoLan] = @solan WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
+                cm.Parameters.AddWithValue("@solan",Convert.ToInt32(kketnoi.lay1dong("select solan from hinh where mssv='"+ma+"' and mahinh='"+list[l]+"' "))+1);
+                cm.Parameters.AddWithValue("@mssv", ma);
+                cm.Parameters.AddWithValue("@mahinh", list[l]);
+                kketnoi.connect();
+                cm.ExecuteNonQuery();
+            }
+            kketnoi.connectClose();
+            //Tìm kiếm mã ảnh có số lần cập nhật thấp nhất theo mssv
+            string mahinh = kketnoi.lay1dong("select top 1  mahinh from hinh where mssv='"+ma+"' and solan<=(select min(solan) from hinh where mssv='"+ma+"')");
+            //Lưu ma trận
+            string matran = "";
+            int row = matrix.NoRows;
+            int col = matrix.NoCols;
+            for (int k = 0; k < row; k++)
+                for (int l = 0; l < col; l++)
+                {
+                    matran += matrix[k, l];
+                    matran += '.';
+                }
+            
+            string minsolan = kketnoi.lay1dong("select min(solan) from hinh where mssv='"+ma+"'");
+            MessageBox.Show(ma + "_" + "\n" + mahinh);
+            //cập nhật ma trận + so lan theo mã hình và mssv
+            kketnoi.connect();
+            cm = new SqlCommand("UPDATE [Hinh] SET [Hinh] = @hinh, solan=@solan WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
+            cm.Parameters.AddWithValue("@hinh", matran);
+            cm.Parameters.AddWithValue("@mssv", ma);
+            cm.Parameters.AddWithValue("@mahinh", mahinh);
+            cm.Parameters.AddWithValue("@solan", Convert.ToInt16(minsolan)+1);
+            cm.ExecuteNonQuery();
+            kketnoi.connectClose();
         }
 
         #region recognize by opencv (eigen face)...
@@ -547,7 +600,7 @@ namespace DXApplication1.gui
                 if (!ktgrabber)
                 {
                     detect.Text = "Stop";
-                    ktgrabber = true;
+                    ktgrabber  = true;
                     grabber = new Capture("rtsp://192.168.0.10//user=admin1_password=admin1_channel=1_stream=1.sdp");
                     grabber.QueryFrame();
                     Application.Idle += new EventHandler(FrameGrabber);
@@ -622,7 +675,7 @@ namespace DXApplication1.gui
             string dtt1 = "";//==================================
             for (int i = 0; i < matrix1stam.Count; i++)
             {
-                matrananh = "";
+
 
                 row = matrix1stam[i].NoRows;
                 col = matrix1stam[i].NoCols;
@@ -638,17 +691,17 @@ namespace DXApplication1.gui
                 kketnoi.connect();
                 SqlCommand cm3 = new SqlCommand("insert into Hinh values('" + mssvtxt.Text.Trim() + "'," + i + ",'" + matrananh + "','')", kketnoi.con); //son
                 cm3.ExecuteNonQuery();
-               
+                matrananh = "";
                 //matrananh += "@0@";
             }
             //===========================
             //MessageBox.Show(matrananh.ToString());
             // string dtt1 = matrananh.ToString();
 
-            string fileName = Application.StartupPath + "\\dtt1.txt";
-            StreamWriter sw = new StreamWriter(fileName, false);
-            sw.WriteLine(dtt1);
-            sw.Close();
+            //string fileName = Application.StartupPath + "\\dtt1.txt";
+            //StreamWriter sw = new StreamWriter(fileName, false);
+            //sw.WriteLine(dtt1);
+            //sw.Close();
 
             kketnoi.connect();
             SqlCommand cm = new SqlCommand("insert into sinhvien values('" + mssvtxt.Text + "','" + textBox1.Text + "','','','','','" + loptxt.Text + "')", kketnoi.con);
@@ -656,14 +709,7 @@ namespace DXApplication1.gui
             SqlCommand cm2 = new SqlCommand("insert into diemdanh values('" + mssvtxt.Text + "','','','','','','','','','','','')", kketnoi.con);
             cm2.ExecuteNonQuery();
 
-            //dt = kketnoi.laydl("select mamh from mon");
-            //foreach (DataRow dr in dt.Rows)
-            //{
-            //    kketnoi.connect();
-            //    SqlCommand cm2 = new SqlCommand("insert into diemdanh values('" + mssvtxt.Text + "','" + dr[0].ToString() + "','','','','','','','','','','','')", kketnoi.con);
-            //    cm2.ExecuteNonQuery();
-            //}
-            //kketnoi.connectClose();
+            kketnoi.connectClose();
 
         }
 
@@ -704,12 +750,7 @@ namespace DXApplication1.gui
                     //if (dem == 0)
                     imageBox1.Image = TrainedFace;
 
-                    //Write the number of triained faces in a file text for further load
-                    //                   File.WriteAllText(Application.StartupPath + "/Faces/TrainedLabels.txt", trainingImages.ToArray().Length.ToString() + "%");
 
-                    //Write the labels of triained faces in a file text for further load
-
-                    //      tten.Add("tface" + dem.ToString());
                     try
                     {
                         //TrainedFace.Save(directory + "face" + matrix1s.Count + ".bmp");
@@ -734,7 +775,7 @@ namespace DXApplication1.gui
                     x = Radon1.ApdungRadon(x);// PCA.apDungWaveletGabors(x, 0, 1.56, 1);
                     matrix1stam.Add(x);
                     matrix1s.Add(x);
-                    labels.Add(textBox1.Text);
+                    labels.Add(mssvtxt.Text);
 
 
 
@@ -746,7 +787,7 @@ namespace DXApplication1.gui
                     {
                         luuanh();
                         MessageBox.Show(textBox1.Text + "'s Face detected and added :)", "Training OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        dem = 0;mauso = 1;
+                        dem = 0; mauso = 1;
                         // tface = null; tface = new List<Image<Gray, byte>>();
                         matrix1stam = null; matrix1stam = new List<Matrix1>();
                         x = null;
@@ -755,7 +796,7 @@ namespace DXApplication1.gui
                         addface.Text = "Add face 1";
                         resultface = resulteyeL = resulteyeR = resultmouth = resultnose = null;
                         refreshdata();
-                        
+
                     }
                     HDfaces++;
                     mauso++;
@@ -789,17 +830,10 @@ namespace DXApplication1.gui
             }
             catch (Exception ex) { MessageBox.Show("Loi ket noi may chu" + ex.ToString()); }
         }
-        //public void laydsmh()
-        //{
-        //    kketnoi.connect();
-        //    dt = kketnoi.laydl("select mamh,tenmh from mon");
-        //    monhoc_txt.DataSource = dt;
-        //    monhoc_txt.ValueMember = "mamh";
-        //    monhoc_txt.DisplayMember = "tenmh";
-        //}
+
         public void laydslop()
         {
-            
+
             kketnoi.connect();
             dt = kketnoi.laydl("select malop,tenlop from lop");
             loptxt.DataSource = comboBox1.DataSource = dt;
@@ -812,86 +846,22 @@ namespace DXApplication1.gui
         public void refreshdata()
         {
 
-           // MessageBox.Show("a");
+            // MessageBox.Show("a");
             mauso = 1;
             HDfaces = 1;
             label9.Text = mauso.ToString();
             pictureBox1.Image = Image.FromFile(Application.StartupPath.ToString() + "/huongdan/" + HDfaces.ToString() + ".bmp");
             string malop = " and sv.malop=" + comboBox1.Text.Trim();
             if (loptxt.Text == "") malop = "";
-            //kketnoi.connect();
-            //SqlCommand cm = new SqlCommand("exec dssvdd @malop", kketnoi.con);
-            //cm.Parameters.AddWithValue("@malop", malop);
-            //cm.ExecuteNonQuery();
-            //SqlDataAdapter da = new SqlDataAdapter();
-            //da.SelectCommand = cm;
-            //da.Fill(dt);
-            //gridControl1.DataSource = dt;
-            //kketnoi.connectClose();
+
             gridControl1.DataSource = kketnoi.laydl("select sv.MSSV,TenSV,TenLop,Tuan1,Tuan2,Tuan3,Tuan4,Tuan5,Tuan6,Tuan7,Tuan8,Tuan9,Tuan10,Tong from sinhvien sv,lop l,DiemDanh d where sv.MaLop=l.MaLop and d.mssv=sv.mssv" + malop + "");
-            // gridControl1.DataSource = kketnoi.laydl("select sv.MSSV,TenSV,TenLop,Tuan1,Tuan2,Tuan3,Tuan4,Tuan5,Tuan6,Tuan7,Tuan8,Tuan9,Tuan10,Tong from sinhvien sv,lop l,DiemDanh d where sv.MaLop=l.MaLop and d.mssv=sv.mssv" + malop + "");
-            // gridControl1.DataSource = kketnoi.laydl("select * from sinhvien");
+
             kketnoi.connectClose();
 
         }
 
 
 
-
-        private void loptxt_EditValueChanged(object sender, EventArgs e)
-        {/*
-            try
-            {
-                //get all image name  in imagelist
-
-                directorypath = Application.StartupPath + "/Faces/" + loptxt.Text + "";
-                if (!Directory.Exists(directorypath))
-                {
-                    Directory.CreateDirectory(directorypath);
-                }
-                directory = new DirectoryInfo(directorypath + "/");
-                //  Archives = directory.GetFiles("*.bmp");
-
-                loaddanhsachsv();
-                refreshdata();
-                // MessageBox.Show("lop edit values change");
-                // laydl(loptxt.Text);
-                //kketnoi.connect();
-                //  gridControl1.DataSource = kketnoi.laydl("select sv.MSSV,TenSV,TenLop,Tuan1,Tuan2,Tuan3,Tuan4,Tuan5,Tuan6,Tuan7,Tuan8,Tuan9,Tuan10,Tong from sinhvien sv,lop l,DiemDanh d where sv.MaLop=l.MaLop and d.mssv=sv.mssv and sv.malop='" + loptxt.Text + "' ");
-            }
-            catch (Exception ex) { MessageBox.Show("Nothings face in databse" + ex.ToString()); }
-            */
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            // name2 = name1;
-            //   if (timer2.Interval != 1000) timer2.Start();
-            //xoa image trong result
-            //  resultface = null;
-
-        }
-        //private void xoa_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        string malop = " where sinhvien.malop='" + loptxt.Text + "' and DiemDanh.MSSV=sinhvien.MSSV";
-        //        if (loptxt.Text == "") malop = " where  DiemDanh.MSSV=sinhvien.MSSV";
-
-
-        //        kketnoi.connect();
-        //        SqlCommand cm;
-        //        for (int i = 1; i <= 10; i++)
-        //        {
-        //            cm = new SqlCommand("update diemdanh set Tuan" + i + "='' where mssv=(select mssv from sinhvien " + malop + ") update diemdanh set tong=0", kketnoi.con);
-        //            cm.ExecuteNonQuery();
-        //        }
-
-        //        kketnoi.connectClose();
-        //        refreshdata();
-        //    }
-        //    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-        //}
 
         private void diemdanh()
         {
@@ -917,11 +887,6 @@ namespace DXApplication1.gui
         //reset
 
 
-        private void timer3_Tick(object sender, EventArgs e)
-        {
-
-        }
-
         public void NhanDang_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Canclesaveimage();
@@ -941,24 +906,6 @@ namespace DXApplication1.gui
             }
         }
 
-        private void Canclesaveimage()
-        {
-            //try
-            //{
-            //    if (dem > 0 & dem < 10)
-            //    {
-            //        for (int i = 0; i < dem; i++)
-            //        {
-            //            labels.RemoveAt(labels.Count - 1);
-            //            matrix1s.RemoveAt(matrix1s.Count - 1);
-            //        }
-            //        dem = 0;
-            //        addface.Text = "Add face 1";
-            //        // MessageBox.Show(labels.Count.ToString() + matrix1s.Count.ToString());
-            //    }
-            //}
-            //catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-        }
 
         private void diemdanh_Click(object sender, EventArgs e)
         {
@@ -967,43 +914,6 @@ namespace DXApplication1.gui
         }
 
 
-        private void xoasv()
-        {
-            //try
-            //{
-            //    demhinh = Convert.ToInt16(kketnoi.lay1dong("select hinh from sinhvien where stt='" + Convert.ToInt16(stt) + "'"));
-            //    int k = Convert.ToInt16(kketnoi.lay1dong("select max(stt) from sinhvien"));
-            //    if (k == Convert.ToInt16(stt))
-            //    {
-            //        kketnoi.connect();
-            //        SqlCommand cm = new SqlCommand("delete from sinhvien where stt=" + stt + "", kketnoi.con);
-            //        cm.ExecuteNonQuery();
-            //        kketnoi.connectClose();
-            //        for (int i = 0; i < 3; i++)
-            //        {
-            //            File.Delete(Application.StartupPath + "/Faces/face" + demhinh + ".bmp");
-            //            demhinh++;
-            //        }
-            //        LoadImageAndnames();
-
-            //        refreshdata();
-            //    }
-            //}
-            //catch (Exception) { }
-        }
-
-        private void gridView1_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.KeyCode == Keys.Delete)
-            //{
-            //    xoasv();
-            //}
-        }
-
-        private void loptxt_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            // MessageBox.Show("lop selectedindexchange");
-        }
 
         #region xuat file excel
         private void simpleButton1_Click(object sender, EventArgs e)
@@ -1025,21 +935,11 @@ namespace DXApplication1.gui
         }
         #endregion
 
-        private void loptxt_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //try { loaddanhsachsv(); } catch (Exception) { }
-        }
-
-        //private void monhoc_txt_SelectedValueChanged_1(object sender, EventArgs e)
-        //{
-        //    refreshdata();
-        //}
-
         private void loptxt_SelectedValueChanged(object sender, EventArgs e)
         {
             try
             {
-                
+
 
                 //system.data.row=>return
                 if (loptxt.Text.Length > 10)
@@ -1054,25 +954,15 @@ namespace DXApplication1.gui
                 }
                 directory = new DirectoryInfo(directorypath + "/");
                 //  Archives = directory.GetFiles("*.bmp");
-                
-                    loaddanhsachsv();
-                    refreshdata();
-                
-                
-                // MessageBox.Show("lop edit values change");
-                // laydl(loptxt.Text);
-                //kketnoi.connect();
-                //  gridControl1.DataSource = kketnoi.laydl("select sv.MSSV,TenSV,TenLop,Tuan1,Tuan2,Tuan3,Tuan4,Tuan5,Tuan6,Tuan7,Tuan8,Tuan9,Tuan10,Tong from sinhvien sv,lop l,DiemDanh d where sv.MaLop=l.MaLop and d.mssv=sv.mssv and sv.malop='" + loptxt.Text + "' ");
+
+                loaddanhsachsv();
+                refreshdata();
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
-        }
-
-        private void monhoc_txt_SelectedIndexChanged(object sender, EventArgs e)
-        {
-           // refreshdata();
         }
 
         private void xoa_Click_1(object sender, EventArgs e)
@@ -1091,10 +981,6 @@ namespace DXApplication1.gui
             if (!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar))
                 e.Handled = true;
         }
-        ///////////reset
-
-
-
 
 
 
@@ -1129,16 +1015,5 @@ namespace DXApplication1.gui
 
         }
 
-        //xx
-
-        private void xóaSinhViênToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panelControl1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }

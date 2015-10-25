@@ -2132,15 +2132,29 @@ namespace DXApplication1
         }
 
         #region compare2maxtrix
-        public static void Compare(List<Matrix1> matrix1s, List<string> labels, Matrix1 mtthem, out double max, out string name, out double avg, out string nameAvg, int khs)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="matrix1s">danh sách ma trận</param>
+        /// <param name="labels">danh sách tên của ma trận</param>
+        /// <param name="mtthem">ma trận truyền vào để so sánh</param>
+        /// <param name="max"> (out)giá trị lớn nhất của việc so khớp</param>
+        /// <param name="name">(out) tên ma trận tìm được giống nhất theo giá trị max</param>
+        /// <param name="avg">(out) giá trị trung bình lớn nhất của việc so khớp</param>
+        /// <param name="nameAvg">(out)tên ma trận tìm được giống nhất theo giá trị trung bình</param>
+        /// <param name="khs">(out)số lượng ma trận tính trung bình</param>
+        /// <param name="Index_Maxtrix_Max">(out)ma trận tìm thấy lớn nhất và vị trí ban đầu. =null khi unknown</param>
+        public static void Compare(List<Matrix1> matrix1s, List<string> labels, Matrix1 mtthem, out double max, out string name, out double maxavg, out string nameAvg, int khs,out List<double> Index_Maxtrix_Max)
         {
+            List<double> Index_Matrix = new List<double>();
+            List<List<double>> Index_Maxtrix_All = new List<List<double>>(); 
             int dem = 0, demy = 0;
             double[] avgs = new double[matrix1s.Count / 10];
             double[] dgt1 = new double[10];
-
+            Index_Maxtrix_Max = null;
             double gt = 0, sum = 0;
             name = ""; nameAvg = "";
-            max = 0; avg = 0;
+            max = 0; maxavg = 0;
 
             for (int i = 0; i < matrix1s.Count; i++)
             {
@@ -2152,14 +2166,15 @@ namespace DXApplication1
                     max = gt;
                     name = labels[i];
                 }
-                //them % giong cua 1 ng vaof mang 1 chieu
+                //them % giong cua 1 ng vao mang 1 chieu
                 dgt1[demy] = gt;
                 demy++;
                 //xét đủ  10 ảnh 1 người trong 1 mảng 
                 if (i % 9 == 0 & i != 0)
                 {
-                    double sum5 = sapxep_tinhtrungbinh(dgt1, khs);
-                    avgs[dem] = sum5;
+                    double sumkhs = sapxep_tinhtrungbinh(dgt1, khs,out Index_Matrix);
+                    Index_Maxtrix_All.Add(Index_Matrix);
+                    avgs[dem] = sumkhs;
                     //lay trung binh 10 anh 1 nguoi
                     // avgs[dem] = sum / 10;
                     sum = 0;
@@ -2170,19 +2185,22 @@ namespace DXApplication1
             //tim max trong mang cac phan tu trung binh
             for (int i = 0; i < matrix1s.Count / 10; i++)
             {
-                if (avg < avgs[i])
+                if (maxavg < avgs[i])
                 {
-                    avg = avgs[i];
+                    maxavg = avgs[i];
                     nameAvg = labels[i * 10];
+                    Index_Maxtrix_Max = Index_Maxtrix_All[i];
                 }
             }
             if (max < 0.8) name = "Unknown";
-            if (avg < 0.7) nameAvg = "Unknown";
+            if (maxavg < 0.7) { nameAvg = "Unknown"; Index_Maxtrix_Max = null; }
+            
         }
         #endregion
 
-        public static double sapxep_tinhtrungbinh(double[] dgt1, int khs)
+        public static double sapxep_tinhtrungbinh(double[] dgt1, int khs,out List<double> Index_Matrix)
         {
+            Index_Matrix = new List<double>();
             //sap xep giam theo mang arraysort
             List<double> lst = dgt1.OfType<double>().ToList();
             List<double> Sorted = new List<double>();
@@ -2198,11 +2216,10 @@ namespace DXApplication1
                 b += String.Format("{0:0.00}  ", Sorted[i]);
                 c += String.Format("{0}  ",index[i].ToString());
             }
-            MessageBox.Show("List:  "+a+"\nSorted:  "+b+ "\nIndex:  "+c);
+           // MessageBox.Show("List:  "+a+"\nSorted:  "+b+ "\nIndex:  "+c);
 
             //xu ly 10 anh cua 1 ng
             //sap xep giam dan 
-
             for (int j = 0; j < 9; j++)
             {
                 for (int k = j + 1; k < 10; k++)
@@ -2219,7 +2236,9 @@ namespace DXApplication1
             //lay trung binh khs gtri lon nhat
             for (int k = 0; k < khs; k++)
             {
-                sum5 += dgt1[k];
+                sum5 += Sorted[k];
+                Index_Matrix.Add(index[k]);
+                Index_Matrix.Add(Sorted[k]);
             }
             sum5 = sum5 / khs;
             //lay ra mang vi tri cac anh da detect ra 1 lan

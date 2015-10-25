@@ -335,12 +335,12 @@
             // timer3
             // 
             this.timer3.Interval = 2000;
-            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+//            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
             // timer1
             // 
             this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+           // this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // loptxt
             // 
