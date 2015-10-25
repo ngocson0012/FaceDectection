@@ -125,7 +125,7 @@ namespace DXApplication1.gui
 
         private void loaddanhsachsv()
         {
-            MessageBox.Show("AAA");
+            //MessageBox.Show("AAA");
 
             labels = null;
             matrix1s = null;
@@ -638,7 +638,7 @@ namespace DXApplication1.gui
                 kketnoi.connect();
                 SqlCommand cm3 = new SqlCommand("insert into Hinh values('" + mssvtxt.Text.Trim() + "'," + i + ",'" + matrananh + "','')", kketnoi.con); //son
                 cm3.ExecuteNonQuery();
-                matrananh = "";
+               
                 //matrananh += "@0@";
             }
             //===========================
@@ -1039,8 +1039,7 @@ namespace DXApplication1.gui
         {
             try
             {
-                if (!ktdslop)
-                    return;
+                
 
                 //system.data.row=>return
                 if (loptxt.Text.Length > 10)

@@ -442,13 +442,13 @@
             this.ipCam.Name = "ipCam";
             this.ipCam.Size = new System.Drawing.Size(74, 17);
             this.ipCam.TabIndex = 1;
-            this.ipCam.TabStop = true;
             this.ipCam.Text = "Camera IP";
             this.ipCam.UseVisualStyleBackColor = true;
             // 
             // webCam
             // 
             this.webCam.AutoSize = true;
+            this.webCam.Checked = true;
             this.webCam.Location = new System.Drawing.Point(21, 20);
             this.webCam.Name = "webCam";
             this.webCam.Size = new System.Drawing.Size(68, 17);
