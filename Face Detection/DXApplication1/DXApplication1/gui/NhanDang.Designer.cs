@@ -258,7 +258,7 @@
             this.mssvtxt.Location = new System.Drawing.Point(946, 122);
             this.mssvtxt.Name = "mssvtxt";
             this.mssvtxt.Size = new System.Drawing.Size(123, 20);
-            this.mssvtxt.TabIndex = 67;
+            this.mssvtxt.TabIndex = 1;
             this.mssvtxt.Validated += new System.EventHandler(this.mssvtxt_Validated);
             // 
             // textBox1
@@ -266,7 +266,7 @@
             this.textBox1.Location = new System.Drawing.Point(946, 163);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(199, 20);
-            this.textBox1.TabIndex = 66;
+            this.textBox1.TabIndex = 2;
             // 
             // addface
             // 
@@ -275,7 +275,7 @@
             this.addface.Location = new System.Drawing.Point(946, 224);
             this.addface.Name = "addface";
             this.addface.Size = new System.Drawing.Size(87, 31);
-            this.addface.TabIndex = 65;
+            this.addface.TabIndex = 3;
             this.addface.Text = "Add face";
             this.addface.UseVisualStyleBackColor = true;
             this.addface.Click += new System.EventHandler(this.addface_Click);
@@ -335,12 +335,10 @@
             // timer3
             // 
             this.timer3.Interval = 2000;
-//            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
             // timer1
             // 
             this.timer1.Interval = 1000;
-           // this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // loptxt
             // 
@@ -348,7 +346,7 @@
             this.loptxt.Location = new System.Drawing.Point(946, 81);
             this.loptxt.Name = "loptxt";
             this.loptxt.Size = new System.Drawing.Size(121, 21);
-            this.loptxt.TabIndex = 106;
+            this.loptxt.TabIndex = 0;
             this.loptxt.SelectedValueChanged += new System.EventHandler(this.loptxt_SelectedValueChanged);
             // 
             // comboBox1
@@ -357,7 +355,7 @@
             this.comboBox1.Location = new System.Drawing.Point(153, 370);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 107;
+            this.comboBox1.TabIndex = 5;
             this.comboBox1.SelectedValueChanged += new System.EventHandler(this.loptxt_SelectedValueChanged);
             // 
             // lblSoNguoi
@@ -395,7 +393,7 @@
             this.comboBoxEdit1.Location = new System.Drawing.Point(157, 427);
             this.comboBoxEdit1.Name = "comboBoxEdit1";
             this.comboBoxEdit1.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxEdit1.TabIndex = 109;
+            this.comboBoxEdit1.TabIndex = 6;
             // 
             // button2
             // 
@@ -409,10 +407,10 @@
             // 
             // txtk
             // 
-            this.txtk.Location = new System.Drawing.Point(31, 307);
+            this.txtk.Location = new System.Drawing.Point(101, 307);
             this.txtk.Name = "txtk";
             this.txtk.Size = new System.Drawing.Size(100, 20);
-            this.txtk.TabIndex = 110;
+            this.txtk.TabIndex = 4;
             this.txtk.Text = "1";
             // 
             // label13
@@ -420,9 +418,9 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(12, 310);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(13, 13);
+            this.label13.Size = new System.Drawing.Size(83, 13);
             this.label13.TabIndex = 93;
-            this.label13.Text = "k";
+            this.label13.Text = "So ma tran ss(k)";
             // 
             // groupBox1
             // 
@@ -459,6 +457,7 @@
             // 
             // NhanDang
             // 
+            this.AcceptButton = this.addface;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1296, 692);

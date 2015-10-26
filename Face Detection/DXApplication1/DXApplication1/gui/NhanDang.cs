@@ -457,10 +457,12 @@ namespace DXApplication1.gui
             //Cập nhật số lần
             DataTable dtb = new DataTable();
             SqlCommand cm;
-            SqlDataAdapter da;
+           // SqlDataAdapter da;
+            string index = "";
             kketnoi.connect();
             for (int l = 0; l < list.Count; l+=2)
             {
+                index+=list[l].ToString();
                 cm = new SqlCommand("UPDATE [Hinh] SET [SoLan] = @solan WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
                 cm.Parameters.AddWithValue("@solan",Convert.ToInt32(kketnoi.lay1dong("select solan from hinh where mssv='"+ma+"' and mahinh='"+list[l]+"' "))+1);
                 cm.Parameters.AddWithValue("@mssv", ma);
@@ -472,27 +474,31 @@ namespace DXApplication1.gui
             //Tìm kiếm mã ảnh có số lần cập nhật thấp nhất theo mssv
             string mahinh = kketnoi.lay1dong("select top 1  mahinh from hinh where mssv='"+ma+"' and solan<=(select min(solan) from hinh where mssv='"+ma+"')");
             //Lưu ma trận
-            string matran = "";
-            int row = matrix.NoRows;
-            int col = matrix.NoCols;
-            for (int k = 0; k < row; k++)
-                for (int l = 0; l < col; l++)
-                {
-                    matran += matrix[k, l];
-                    matran += '.';
-                }
+            //string matran = "";
+            //int row = matrix.NoRows;
+            //int col = matrix.NoCols;
+            //for (int k = 0; k < row; k++)
+            //    for (int l = 0; l < col; l++)
+            //    {
+            //        matran += matrix[k, l];
+            //        matran += '.';
+            //    }
             
-            string minsolan = kketnoi.lay1dong("select min(solan) from hinh where mssv='"+ma+"'");
-            MessageBox.Show(ma + "_" + "\n" + mahinh);
+            //string minsolan = kketnoi.lay1dong("select min(solan) from hinh where mssv='"+ma+"'");
+            //MessageBox.Show("mssv "+ma + "_" + "\nmahinh it nhat " + mahinh);
+            //MessageBox.Show(matran.ToString());
+
             //cập nhật ma trận + so lan theo mã hình và mssv
-            kketnoi.connect();
-            cm = new SqlCommand("UPDATE [Hinh] SET [Hinh] = @hinh, solan=@solan WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
-            cm.Parameters.AddWithValue("@hinh", matran);
-            cm.Parameters.AddWithValue("@mssv", ma);
-            cm.Parameters.AddWithValue("@mahinh", mahinh);
-            cm.Parameters.AddWithValue("@solan", Convert.ToInt16(minsolan)+1);
-            cm.ExecuteNonQuery();
-            kketnoi.connectClose();
+            //kketnoi.connect();
+            //cm = new SqlCommand("UPDATE [Hinh] SET [Hinh] = @hinh, solan=@solan, ngaycapnhat=@ngay WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
+            //cm.Parameters.AddWithValue("@hinh", matran);
+            //cm.Parameters.AddWithValue("@mssv", ma);
+            //cm.Parameters.AddWithValue("@mahinh", mahinh);
+            //cm.Parameters.AddWithValue("@solan", Convert.ToInt16(minsolan)+1);
+            //cm.Parameters.AddWithValue("@ngay",DateTime.Now.ToString());
+            //cm.ExecuteNonQuery();
+            //kketnoi.connectClose();
+            //MessageBox.Show(index);
         }
 
         #region recognize by opencv (eigen face)...
@@ -689,7 +695,7 @@ namespace DXApplication1.gui
 
                     }
                 kketnoi.connect();
-                SqlCommand cm3 = new SqlCommand("insert into Hinh values('" + mssvtxt.Text.Trim() + "'," + i + ",'" + matrananh + "','')", kketnoi.con); //son
+                SqlCommand cm3 = new SqlCommand("insert into Hinh values('" + mssvtxt.Text.Trim() + "'," + i + ",'" + matrananh + "','','"+DateTime.Now.ToString()+"')", kketnoi.con); //son
                 cm3.ExecuteNonQuery();
                 matrananh = "";
                 //matrananh += "@0@";
@@ -721,7 +727,7 @@ namespace DXApplication1.gui
                 if (textBox1.Text == "" | loptxt.Text == "" | mssvtxt.Text == "") MessageBox.Show("Chưa nhập đủ thông tin");
                 else
                 {
-                    gray = grabber.QueryGrayFrame().Resize(320, 240, INTER.CV_INTER_CUBIC);
+                    gray = grabber.QueryGrayFrame().Resize(640, 480, INTER.CV_INTER_CUBIC);
 
                     //Face Detector
                     MCvAvgComp[][] facesDetected = gray.DetectHaarCascade(
