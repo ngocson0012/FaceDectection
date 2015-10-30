@@ -473,31 +473,31 @@ namespace DXApplication1.gui
             kketnoi.connectClose();
             //Tìm kiếm mã ảnh có số lần cập nhật thấp nhất theo mssv
             string mahinh = kketnoi.lay1dong("select top 1  mahinh from hinh where mssv='"+ma+"' and solan<=(select min(solan) from hinh where mssv='"+ma+"')");
-            //Lưu ma trận
-            //string matran = "";
-            //int row = matrix.NoRows;
-            //int col = matrix.NoCols;
-            //for (int k = 0; k < row; k++)
-            //    for (int l = 0; l < col; l++)
-            //    {
-            //        matran += matrix[k, l];
-            //        matran += '.';
-            //    }
-            
-            //string minsolan = kketnoi.lay1dong("select min(solan) from hinh where mssv='"+ma+"'");
-            //MessageBox.Show("mssv "+ma + "_" + "\nmahinh it nhat " + mahinh);
+           // Lưu ma trận
+            string matran = "";
+            int row = matrix.NoRows;
+            int col = matrix.NoCols;
+            for (int k = 0; k < row; k++)
+                for (int l = 0; l < col; l++)
+                {
+                    matran += matrix[k, l];
+                    matran += '.';
+                }
+
+            string minsolan = kketnoi.lay1dong("select min(solan) from hinh where mssv='" + ma + "'");
+            //MessageBox.Show("mssv " + ma + "_" + "\nmahinh it nhat " + mahinh);
             //MessageBox.Show(matran.ToString());
 
-            //cập nhật ma trận + so lan theo mã hình và mssv
-            //kketnoi.connect();
-            //cm = new SqlCommand("UPDATE [Hinh] SET [Hinh] = @hinh, solan=@solan, ngaycapnhat=@ngay WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
-            //cm.Parameters.AddWithValue("@hinh", matran);
-            //cm.Parameters.AddWithValue("@mssv", ma);
-            //cm.Parameters.AddWithValue("@mahinh", mahinh);
-            //cm.Parameters.AddWithValue("@solan", Convert.ToInt16(minsolan)+1);
-            //cm.Parameters.AddWithValue("@ngay",DateTime.Now.ToString());
-            //cm.ExecuteNonQuery();
-            //kketnoi.connectClose();
+            //cập nhật ma trận +so lan theo mã hình và mssv
+            kketnoi.connect();
+            cm = new SqlCommand("UPDATE [Hinh] SET [Hinh] = @hinh, solan=@solan, ngaycapnhat=@ngay WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
+            cm.Parameters.AddWithValue("@hinh", matran);
+            cm.Parameters.AddWithValue("@mssv", ma);
+            cm.Parameters.AddWithValue("@mahinh", mahinh);
+            cm.Parameters.AddWithValue("@solan", Convert.ToInt16(minsolan) + 1);
+            cm.Parameters.AddWithValue("@ngay", DateTime.Now.ToString());
+            cm.ExecuteNonQuery();
+            kketnoi.connectClose();
             //MessageBox.Show(index);
         }
 
