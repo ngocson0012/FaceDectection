@@ -464,7 +464,9 @@ namespace DXApplication1.gui
             {
                 index+=list[l].ToString();
                 cm = new SqlCommand("UPDATE [Hinh] SET [SoLan] = @solan WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
-                cm.Parameters.AddWithValue("@solan",Convert.ToInt32(kketnoi.lay1dong("select solan from hinh where mssv='"+ma+"' and mahinh='"+list[l]+"' "))+1);
+                string tam = kketnoi.lay1dong("select solan from hinh where mssv='" + ma + "' and mahinh='" + list[l] + "' ");
+                if (tam.Trim() == "") tam = "0";
+                cm.Parameters.AddWithValue("@solan",Convert.ToInt32(tam)+1);
                 cm.Parameters.AddWithValue("@mssv", ma);
                 cm.Parameters.AddWithValue("@mahinh", list[l]);
                 kketnoi.connect();
