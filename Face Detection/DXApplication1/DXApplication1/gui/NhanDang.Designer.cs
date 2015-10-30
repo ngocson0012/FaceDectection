@@ -483,7 +483,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.ibm);
+//            this.Controls.Add(this.ibm);
             this.Controls.Add(this.ibn);
             this.Controls.Add(this.ibe2);
             this.Controls.Add(this.ibe1);

@@ -2156,22 +2156,24 @@ namespace DXApplication1
             name = ""; nameAvg = "";
             max = 0; maxavg = 0;
 
-            for (int i = 0; i < matrix1s.Count; i++)
+            for (int i = 1; i <= matrix1s.Count; i++)
             {
-                gt = Match.MatchO(matrix1s[i], mtthem);
+                //dem = 0;
+                gt = Match.MatchO(matrix1s[i-1], mtthem);
                 sum += gt;
                 if (gt.CompareTo(max) == 1)
                 {
 
                     max = gt;
-                    name = labels[i];
+                    name = labels[i-1];
                 }
                 //them % giong cua 1 ng vao mang 1 chieu
                 dgt1[demy] = gt;
                 demy++;
                 //xét đủ  10 ảnh 1 người trong 1 mảng 
-                if (i % 9 == 0 & i != 0)
+                if (i % 10 == 0 & i != 1)
                 {
+                    Console.WriteLine(matrix1s.Count+"   "+dem.ToString());
                     double sumkhs = sapxep_tinhtrungbinh(dgt1, khs,out Index_Matrix);
                     Index_Maxtrix_All.Add(Index_Matrix);
                     avgs[dem] = sumkhs;
