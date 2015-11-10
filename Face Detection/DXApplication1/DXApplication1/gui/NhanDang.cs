@@ -10,6 +10,8 @@ using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
+using DXApplication1.lib;
 
 namespace DXApplication1.gui
 {
@@ -221,7 +223,10 @@ namespace DXApplication1.gui
 
         List<string> NamePersons = new List<string>();
         int ContTrain, NumLabels, t;
-        string name, names = null;
+        VideoWriter VW;
+        string path = "",s="";
+        List<string> hex = new List<string>();
+        
 
 
 
@@ -403,19 +408,19 @@ namespace DXApplication1.gui
                         lblMax.Text = string.Format("{0:00.0000}", max);
                         lblAvg.Text = string.Format("{0:00.0000}", avg);
                         lblTenAvg.Text = nameAvg;
-                       // string test = "";
+                        // string test = "";
                         if (Index_Maxtrix_Max != null)
                         {
                             //foreach (var ins in Index_Maxtrix_Max)
                             //{
                             //    test += ins.ToString() + "\n";
                             //}
-                           // MessageBox.Show(test);
-                            CapNhatAnh(Index_Maxtrix_Max,nameAvg,matrixtam);
+                            // MessageBox.Show(test);
+                            CapNhatAnh(Index_Maxtrix_Max, nameAvg, matrixtam);
 
                         }
                         //Draw the label for each face detected and recognized
-                        currentFrame.Draw(namegb, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
+                        currentFrame.Draw(namegb+" "+DateTime.Now.Second+" "+DateTime.Now.Millisecond, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
 
 
                     }
@@ -437,8 +442,11 @@ namespace DXApplication1.gui
                 //    names = names + NamePersons[nnn] + " ";
                 //}
                 //Show the faces procesed and recognized
-
-                imageBoxframgrabber.Image = currentFrame;
+                
+                    LuuVideoMethod();
+                    //Thread.Sleep(1000);
+                
+                imageBoxframgrabber.Image = currentFrame;//Console.WriteLine(DateTime.Now.Second+" "+DateTime.Now.Millisecond);
 
                 if (comboBoxEdit1.Text != null && name1 != null)
                     diemdanh();
@@ -452,21 +460,31 @@ namespace DXApplication1.gui
                 MessageBox.Show("Loi la \n " + exx.ToString());
             }
         }
-        public void CapNhatAnh(List<double> list,string ma,Matrix1 matrix)
+
+        private void LuuVideoMethod()
+        {
+            //s = BitConverter.ToString(library.ConvertImageToByte(currentFrame.ToBitmap())); //.Replace("-", "");
+            //hex.Add(s);
+            if(luuvideo)
+            VW.WriteFrame(currentFrame);
+
+        }
+
+        public void CapNhatAnh(List<double> list, string ma, Matrix1 matrix)
         {
             //Cập nhật số lần
             DataTable dtb = new DataTable();
             SqlCommand cm;
-           // SqlDataAdapter da;
+            // SqlDataAdapter da;
             string index = "";
             kketnoi.connect();
-            for (int l = 0; l < list.Count; l+=2)
+            for (int l = 0; l < list.Count; l += 2)
             {
-                index+=list[l].ToString();
+                index += list[l].ToString();
                 cm = new SqlCommand("UPDATE [Hinh] SET [SoLan] = @solan WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
                 string tam = kketnoi.lay1dong("select solan from hinh where mssv='" + ma + "' and mahinh='" + list[l] + "' ");
                 if (tam.Trim() == "") tam = "0";
-                cm.Parameters.AddWithValue("@solan",Convert.ToInt32(tam)+1);
+                cm.Parameters.AddWithValue("@solan", Convert.ToInt32(tam) + 1);
                 cm.Parameters.AddWithValue("@mssv", ma);
                 cm.Parameters.AddWithValue("@mahinh", list[l]);
                 kketnoi.connect();
@@ -474,8 +492,8 @@ namespace DXApplication1.gui
             }
             kketnoi.connectClose();
             //Tìm kiếm mã ảnh có số lần cập nhật thấp nhất theo mssv
-            string mahinh = kketnoi.lay1dong("select top 1  mahinh from hinh where mssv='"+ma+"' and solan<=(select min(solan) from hinh where mssv='"+ma+"')");
-           // Lưu ma trận
+            string mahinh = kketnoi.lay1dong("select top 1  mahinh from hinh where mssv='" + ma + "' and solan<=(select min(solan) from hinh where mssv='" + ma + "')");
+            // Lưu ma trận
             string matran = "";
             int row = matrix.NoRows;
             int col = matrix.NoCols;
@@ -608,7 +626,7 @@ namespace DXApplication1.gui
                 if (!ktgrabber)
                 {
                     detect.Text = "Stop";
-                    ktgrabber  = true;
+                    ktgrabber = true;
                     grabber = new Capture("rtsp://192.168.0.10//user=admin1_password=admin1_channel=1_stream=0.sdp");
                     grabber.QueryFrame();
                     Application.Idle += new EventHandler(FrameGrabber);
@@ -628,6 +646,7 @@ namespace DXApplication1.gui
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
+
         private void webCamDetect()
         {
             try
@@ -697,7 +716,7 @@ namespace DXApplication1.gui
 
                     }
                 kketnoi.connect();
-                SqlCommand cm3 = new SqlCommand("insert into Hinh values('" + mssvtxt.Text.Trim() + "'," + i + ",'" + matrananh + "','','"+DateTime.Now.ToString()+"')", kketnoi.con); //son
+                SqlCommand cm3 = new SqlCommand("insert into Hinh values('" + mssvtxt.Text.Trim() + "'," + i + ",'" + matrananh + "','','" + DateTime.Now.ToString() + "')", kketnoi.con); //son
                 cm3.ExecuteNonQuery();
                 matrananh = "";
                 //matrananh += "@0@";
@@ -837,6 +856,44 @@ namespace DXApplication1.gui
                 refreshdata();
             }
             catch (Exception ex) { MessageBox.Show("Loi ket noi may chu" + ex.ToString()); }
+        }
+        
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "AVI|*.avi";
+            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                path = saveFileDialog1.FileName;
+                double fpsInitial = grabber.GetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_POS_FRAMES);
+
+                int fps = (int)fpsInitial;
+                VW = new VideoWriter(path, 4, 640, 480, true);
+                //VW.WriteFrame(currentFrame);
+                try {
+                    //foreach (String h in hex)
+                    //{
+                    //    Image frame;
+                    //    frame = library.ConvertByteToImage(library.DecodeHex(h));
+
+                    //    Image<Gray, Byte> normalizedMasterImage = new Image<Gray, Byte>((Bitmap)frame);
+                    //    VW.WriteFrame(normalizedMasterImage);
+                        
+                    //}
+                    //MessageBox.Show("Video Generated Successfully", "Success");
+                    luuvideo = true;
+                }catch(Exception ei)
+                {
+                    //VW.Dispose();
+                    MessageBox.Show(ei.ToString());
+                }
+            }
+        }
+        bool luuvideo=false;
+        private void button4_Click(object sender, EventArgs e)
+        {
+            luuvideo = false;
+            VW.Dispose();
         }
 
         public void laydslop()

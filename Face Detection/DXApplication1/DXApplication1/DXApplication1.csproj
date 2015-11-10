@@ -101,6 +101,7 @@
     <Compile Include="lib\ImageProcess.cs" />
     <Compile Include="lib\ImageReader.cs" />
     <Compile Include="lib\ketnoi.cs" />
+    <Compile Include="lib\library.cs" />
     <Compile Include="lib\Match.cs" />
     <Compile Include="lib\Matrix1.cs" />
     <Compile Include="lib\PCA.cs" />

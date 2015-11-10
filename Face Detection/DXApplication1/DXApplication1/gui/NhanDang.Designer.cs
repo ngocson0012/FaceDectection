@@ -69,6 +69,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ipCam = new System.Windows.Forms.RadioButton();
             this.webCam = new System.Windows.Forms.RadioButton();
+            this.button3 = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ibn)).BeginInit();
@@ -455,12 +458,34 @@
             this.webCam.Text = "Webcam";
             this.webCam.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(540, 142);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 112;
+            this.button3.Text = "bam nut";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(584, 171);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(102, 23);
+            this.button4.TabIndex = 113;
+            this.button4.Text = "Ngừng save";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // NhanDang
             // 
             this.AcceptButton = this.addface;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1296, 692);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtk);
             this.Controls.Add(this.comboBoxEdit1);
@@ -483,7 +508,6 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
-//            this.Controls.Add(this.ibm);
             this.Controls.Add(this.ibn);
             this.Controls.Add(this.ibe2);
             this.Controls.Add(this.ibe1);
@@ -562,5 +586,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton ipCam;
         private System.Windows.Forms.RadioButton webCam;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button button4;
     }
 }
