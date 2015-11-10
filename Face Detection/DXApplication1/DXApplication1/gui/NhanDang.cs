@@ -464,7 +464,9 @@ namespace DXApplication1.gui
             {
                 index+=list[l].ToString();
                 cm = new SqlCommand("UPDATE [Hinh] SET [SoLan] = @solan WHERE MSSV=@mssv and MaHinh=@mahinh", kketnoi.con);
-                cm.Parameters.AddWithValue("@solan",Convert.ToInt32(kketnoi.lay1dong("select solan from hinh where mssv='"+ma+"' and mahinh='"+list[l]+"' "))+1);
+                string tam = kketnoi.lay1dong("select solan from hinh where mssv='" + ma + "' and mahinh='" + list[l] + "' ");
+                if (tam.Trim() == "") tam = "0";
+                cm.Parameters.AddWithValue("@solan",Convert.ToInt32(tam)+1);
                 cm.Parameters.AddWithValue("@mssv", ma);
                 cm.Parameters.AddWithValue("@mahinh", list[l]);
                 kketnoi.connect();
@@ -607,7 +609,7 @@ namespace DXApplication1.gui
                 {
                     detect.Text = "Stop";
                     ktgrabber  = true;
-                    grabber = new Capture("rtsp://192.168.0.10//user=admin1_password=admin1_channel=1_stream=1.sdp");
+                    grabber = new Capture("rtsp://192.168.0.10//user=admin1_password=admin1_channel=1_stream=0.sdp");
                     grabber.QueryFrame();
                     Application.Idle += new EventHandler(FrameGrabber);
                     addface.Enabled = true;
