@@ -2197,7 +2197,7 @@ namespace DXApplication1
             
         }
         #endregion
-
+        //aa
         public static double sapxep_tinhtrungbinh(double[] dgt1, int khs,out List<double> Index_Matrix)
         {
             Index_Matrix = new List<double>();
