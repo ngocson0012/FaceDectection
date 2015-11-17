@@ -394,7 +394,7 @@ namespace DXApplication1.gui
                     //xx
                     #endregion
 
-                    //////////////////////////////////////////////////
+                    ////////////////////////////////////////////////// 
                     if (matrix1s != null)
                     {
                         int khs = Convert.ToInt16(txtk.Text);
